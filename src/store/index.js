@@ -3,30 +3,29 @@ import axios from 'axios'
 
 const API_URL = 'https://api.themoviedb.org/3';
 const API_KEY = 'dd12843975ef1507dc4e7cee16599a96';
-const IMAGE_PATH = 'https://image.tmdb.org/t/p/original/';
-
-// const apiClient = axios.create({
-//   baseURL: API_BASE_URL,
-//   headers: {'x-apikey': 'dd12843975ef1507dc4e7cee16599a96'},
-// });
 
 export default createStore({
   state: {
-    movies: [],
+    discoverMovies: [],
+    searchMovies: [],
   },
   getters: {
-    getMovies: (state) => state.movies,
+    getDiscoverMovies: (state) => state.discoverMovies,
+    getSearchMovies: (state) => state.searchMovies,
   },
   mutations: {
-    setMovies: (state, movies) => {
-      state.movies = movies;
+    setDiscoverMovies: (state, movies) => {
+      state.discoverMovies = movies;
     },
-    addMovies: (state, movies) => {
-      state.movies = [...state.movies, ...movies];
+    addDiscoverMovies: (state, movies) => {
+      state.discoverMovies = [...state.discoverMovies, ...movies];
+    },
+    setSearchMovies: (state, movies) => {
+      state.searchMovies = movies;
     },
   },
   actions: {
-    async fetchMovies({ commit }, page) {
+    async discoverMovies({ commit }, page) {
       try {
         const response = await axios.get(`${API_URL}/discover/movie`, {
           params: {
@@ -38,12 +37,29 @@ export default createStore({
         const movies = response.data.results;
 
         if (page === 1) {
-          commit('setMovies', movies);
+          commit('setDiscoverMovies', movies);
         } else {
-          commit('addMovies', movies);
+          commit('addDiscoverMovies', movies);
         }
       } catch (error) {
-        console.error('Error fetching movies:', error);
+        console.error('Error fetching discover movies:', error);
+      }
+    },
+
+    async searchMovies({ commit }, query) {
+      try {
+        const response = await axios.get(`${API_URL}/search/movie`, {
+          params: {
+            api_key: API_KEY,
+            query: query,
+          },
+        });
+
+        const movies = response.data.results;
+
+        commit('setSearchMovies', movies);
+      } catch (error) {
+        console.error('Error searching movies:', error);
       }
     },
   },
