@@ -1,22 +1,32 @@
 <template>
   <div class="search-container" ref="searchContainer">
     <input type="text" v-model="searchQuery" @input="searchMovies">
-    <button class="btn btn-outline-primary btn-sm" style="margin: 0px 3px; height: 20%; " ><i class="bi bi-search"></i></button>
+    <button class="btn btn-outline-primary btn-sm" style="margin: 0px 3px; height: 20%; "><i
+        class="bi bi-search"></i></button>
     <div v-if="searchSuggestions.length > 0" class="search-suggestions" @click="handleSuggestionsClick">
       <div v-for="suggestion in searchSuggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
         {{ suggestion.title }}
       </div>
     </div>
   </div>
+  <MovieModal v-if="clickModalBool" :movie="selectedSuggestion" @closeModal="modalClosed" />
 </template>
   
 <script>
+import MovieModal from './MovieModal.vue';
+
 export default {
   data() {
     return {
       searchQuery: '',
       searchSuggestions: [],
+      selectedSuggestion: "",
+
+      clickModalBool: false,
     };
+  },
+  components: {
+    MovieModal,
   },
   methods: {
     async searchMovies() {
@@ -28,7 +38,8 @@ export default {
       }
     },
     selectSuggestion(suggestion) {
-      console.log('Sugerencia seleccionada:', suggestion);
+      this.selectedSuggestion = suggestion;
+      this.clickModalBool = true;
       this.searchSuggestions = [];
     },
     handleSuggestionsClick(event) {
@@ -37,6 +48,13 @@ export default {
         this.searchSuggestions = [];
       }
     },
+
+    openModal() {
+      
+    },
+    modalClosed() {
+      this.clickModalBool = false;
+    }
   },
   mounted() {
     this.$nextTick(() => {
