@@ -23,6 +23,7 @@ export default {
 <style>
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js";
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

@@ -1,6 +1,7 @@
 <template>
   <div class="search-container" ref="searchContainer">
     <input type="text" v-model="searchQuery" @input="searchMovies">
+    <button class="btn btn-outline-primary btn-sm" style="margin: 0px 3px; height: 20%; " ><i class="bi bi-search"></i></button>
     <div v-if="searchSuggestions.length > 0" class="search-suggestions" @click="handleSuggestionsClick">
       <div v-for="suggestion in searchSuggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
         {{ suggestion.title }}

@@ -20,7 +20,7 @@ export default {
   name: 'Popular',
   components: {
     Loading,
-    Movie
+    Movie,
   },
   data() {
     return {
