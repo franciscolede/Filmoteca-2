@@ -1,78 +1,87 @@
 <template>
-    <div class="search-container">
-      <input type="text" v-model="searchQuery" @input="searchMovies">
-      <div v-if="searchSuggestions.length > 0" class="search-suggestions">
-        <div v-for="suggestion in searchSuggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
-          {{ suggestion.title }}
-        </div>
+  <div class="search-container" ref="searchContainer">
+    <input type="text" v-model="searchQuery" @input="searchMovies">
+    <div v-if="searchSuggestions.length > 0" class="search-suggestions" @click="handleSuggestionsClick">
+      <div v-for="suggestion in searchSuggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
+        {{ suggestion.title }}
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
-  <script>
-  export default {
-    data() {
-      return {
-        searchQuery: '',
-        searchSuggestions: [],
-      };
+<script>
+export default {
+  data() {
+    return {
+      searchQuery: '',
+      searchSuggestions: [],
+    };
+  },
+  methods: {
+    async searchMovies() {
+      try {
+        await this.$store.dispatch('searchMovies', this.searchQuery);
+        this.searchSuggestions = this.$store.getters.getSearchMovies;
+      } catch (error) {
+        console.error('Error:', error);
+      }
     },
-    methods: {
-      async searchMovies() {
-        try {
-          await this.$store.dispatch('searchMovies', this.searchQuery);
-  
-          // Obtén sugerencias de la tienda y actualiza el estado local
-          this.searchSuggestions = this.$store.getters.getSearchMovies;
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      },
-      selectSuggestion(suggestion) {
-        // Puedes realizar acciones adicionales cuando se selecciona una sugerencia
-        console.log('Sugerencia seleccionada:', suggestion);
-  
-        // Limpiar la lista de sugerencias después de seleccionar una
+    selectSuggestion(suggestion) {
+      console.log('Sugerencia seleccionada:', suggestion);
+      this.searchSuggestions = [];
+    },
+    handleSuggestionsClick(event) {
+      if (this.$refs.searchContainer && !this.$refs.searchContainer.contains(event.target)) {
+        // Clic fuera del área de interés, cierra la lista de sugerencias
         this.searchSuggestions = [];
-      },
+      }
     },
-  };
-  </script>
+  },
+  mounted() {
+    this.$nextTick(() => {
+      document.addEventListener('click', this.handleSuggestionsClick);
+    });
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.handleSuggestionsClick);
+  },
+};
+</script>
   
-  <style scoped>
-    .search-container{
-        margin: auto;
-        text-align: center;
-    position: relative;
-    }
+<style scoped>
+.search-container {
+  margin: auto;
+  text-align: center;
+  position: relative;
+}
 
-    input{
-        width: 250px;
-        margin-bottom: 10px;
-    }
+input {
+  width: 250px;
+  margin-bottom: 10px;
+}
 
-  .search-suggestions {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    max-height: 150px;
-    width: 350px;
-    overflow-y: auto;
-    z-index: 1001;
+.search-suggestions {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  width: 350px;
+  overflow-y: auto;
+  z-index: 1000;
 
-    margin-top: 5px;
+  margin-top: 5px;
 
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .search-suggestions div {
-    padding: 5px;
-    cursor: pointer;
-  }
-  
-  .search-suggestions div:hover {
-    background-color: #f0f0f0;
-  }
-  </style>
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.search-suggestions div {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.search-suggestions div:hover {
+  background-color: #f0f0f0;
+}
+</style>
   
