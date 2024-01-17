@@ -58,6 +58,7 @@
     max-height: 150px;
     width: 350px;
     overflow-y: auto;
+    z-index: 1001;
 
     margin-top: 5px;
 

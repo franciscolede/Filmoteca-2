@@ -2,7 +2,7 @@
   <div class="trends">
     <div class="movies-container">
       <div class="movie" v-for="movie in movies" :key="movie.id">
-        <img :src="getImageUrl(movie.poster_path)" :alt="movie.title" loading="lazy" @load="imageLoaded"/>
+        <Movie :movie="movie"/>
       </div>
     </div>
     <Loading v-if="loading"/>
@@ -14,11 +14,13 @@
 
 <script>
 import Loading from './loading.vue';
+import Movie from './Movie.vue';
 
 export default {
   name: 'Popular',
   components: {
     Loading,
+    Movie
   },
   data() {
     return {
@@ -35,9 +37,6 @@ export default {
     this.discoverMovies();
   },
   methods: {
-    getImageUrl(posterPath) {
-      return `https://image.tmdb.org/t/p/original/${posterPath}`;
-    },
     async discoverMovies() {
       try {
         this.loading = true;
@@ -51,9 +50,6 @@ export default {
     async loadMore() {
       this.currentPage++;
       await this.discoverMovies();
-    },
-    imageLoaded(event) {
-      event.target.classList.add('loaded');
     },
   },
 };
@@ -70,17 +66,6 @@ export default {
 
 .movie {
   margin: 0;
-}
-
-.movie img {
-  width: 100%;
-  border-radius: 10px;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-.movie img.loaded {
-  opacity: 1;
 }
 
 button {

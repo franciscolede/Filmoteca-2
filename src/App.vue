@@ -22,6 +22,7 @@ export default {
 
 <style>
 @import '~bootstrap/dist/css/bootstrap.min.css';
+@import "~bootstrap-icons/font/bootstrap-icons.css";
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
