@@ -53,6 +53,12 @@ export default {
     opacity: 0;
     transition: opacity 1s ease-in-out;
     cursor: pointer;
+    filter: brightness(0.9)
+}
+
+.movie img:hover{
+    filter: brightness(1);
+  border: 1px solid white;
 }
 
 .movie img.loaded {

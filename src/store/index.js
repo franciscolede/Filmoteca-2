@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
+import videoModule from './videoModule';
 
 const API_URL = 'https://api.themoviedb.org/3';
 const API_KEY = 'dd12843975ef1507dc4e7cee16599a96';
@@ -33,7 +34,7 @@ export default createStore({
             page: page,
           },
         });
-
+        
         const movies = response.data.results;
 
         if (page === 1) {
@@ -64,5 +65,6 @@ export default createStore({
     },
   },
   modules: {
+    videoModule: videoModule,
   }
 })
