@@ -1,8 +1,7 @@
 <template>
   <div class="search-container" ref="searchContainer">
+    <i class="bi bi-search" style="margin-right: 5px;" ></i>
     <input type="text" placeholder="Search for a movie..." v-model="searchQuery" @input="searchMovies">
-    <button id="btn-search" class="btn btn-outline-primary btn-sm" style="margin: 0px 3px; height: 20%; "><i
-        class="bi bi-search"></i></button>
     <div v-if="searchSuggestions.length > 0" class="search-suggestions" @click="handleSuggestionsClick">
       <div v-for="suggestion in searchSuggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
         {{ suggestion.title }}
@@ -13,7 +12,7 @@
 </template>
   
 <script>
-import MovieModal from './MovieModal.vue';
+import MovieModal from '../MovieComponents/MovieModal.vue';
 
 export default {
   data() {

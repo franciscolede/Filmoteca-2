@@ -1,18 +1,12 @@
 <template>
-  <nav>
-    <img src="./assets/logo.png" alt="">
-    <div class="routes">
-      <router-link class="router-link" to="/">Home</router-link>
-      <router-link class="router-link" to="/discover">Discover</router-link>
-    </div>
-  </nav>
+  <Nav></Nav>
   <Search></Search>
   <router-view/>
 </template>
 
 <script>
-import Search from './components/search.vue'; 
-
+import Search from './components/viewsComponents/search.vue'; 
+import Nav from './components/viewsComponents/Nav.vue';
 
 
 export default {
@@ -21,6 +15,7 @@ export default {
   },
   components: {
     Search,
+    Nav,
   },
 }
 </script>
@@ -37,7 +32,7 @@ export default {
   color: #2c3e50;
 
   display: grid;
-  grid-template-columns: 10% 1fr; 
+  grid-template-columns: 8% 1fr; 
   grid-template-rows: 80px auto;
   grid-template-areas:
     "nav search"
@@ -48,39 +43,31 @@ export default {
     background-color: rgba(150, 150, 150, 0.781);
 }
 
-nav {
-  grid-area: nav;
-  display: flex;
-  flex-direction: column; 
-  align-items: center; 
-
-  background-color: #000000;
+body {
+  overflow-y: scroll;
 }
 
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #42b983 #ffffff;
+  }
 
-nav img{
-  height: 80px;
-  padding: 5px 0;
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 16px;
+  }
 
-  position: fixed;
-}
+  *::-webkit-scrollbar-track {
+    background: rgba(150, 150, 150, 0.781);
+  }
 
-.routes{
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-
-  top: 80px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+  *::-webkit-scrollbar-thumb {
+    background-color: #54a06e;
+    border-radius: 10px;
+    border: 3px solid #ffffff6e;
+  }
 
 Search {
   grid-area: search;
@@ -98,26 +85,6 @@ router-view {
       "nav"
       "search"
       "router-view";
-  }
-
-  nav {
-    position: relative;
-    margin-bottom: 10px;
-  }
-
-  nav img {
-    position: static;
-    max-height: 80px;
-  }
-
-  .routes {
-    position: static;
-    top: auto;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    justify-content: center;
-    width: 100%;
   }
 }
 </style>

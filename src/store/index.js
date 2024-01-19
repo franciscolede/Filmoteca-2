@@ -9,10 +9,12 @@ export default createStore({
   state: {
     discoverMovies: [],
     searchMovies: [],
+    genres: [],
   },
   getters: {
     getDiscoverMovies: (state) => state.discoverMovies,
     getSearchMovies: (state) => state.searchMovies,
+    getGenres: (state) => state.genres,
   },
   mutations: {
     setDiscoverMovies: (state, movies) => {
@@ -23,6 +25,12 @@ export default createStore({
     },
     setSearchMovies: (state, movies) => {
       state.searchMovies = movies;
+    },
+    setGenres: (state, genres) => {
+      state.genres = genres;
+    },
+    clearMovies: (state) => {
+      state.discoverMovies = [];
     },
   },
   actions: {
@@ -63,6 +71,23 @@ export default createStore({
         console.error('Error searching movies:', error);
       }
     },
+
+    async fetchGenres({ commit }) {
+      try {
+        const response = await axios.get(`${API_URL}/genre/movie/list`, {
+          params: {
+            api_key: API_KEY,
+          },
+        });
+
+        const genres = response.data.genres;
+
+        commit('setGenres', genres);
+      } catch (error) {
+        console.error('Error searching genres:', error);
+      }
+    },
+
   },
   modules: {
     videoModule: videoModule,

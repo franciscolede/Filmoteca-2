@@ -48,7 +48,7 @@ export default {
 
 .movie img {
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 10px;
     opacity: 0;
     transition: opacity 1s ease-in-out;

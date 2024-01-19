@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import Loading from './loading.vue';
-import Movie from './Movie.vue';
+import Loading from '../../components/loading.vue';
+import Movie from '../MovieComponents/Movie.vue';
 
 export default {
   name: 'Popular',
@@ -56,6 +56,8 @@ export default {
 </script>
 
 <style scoped>
+
+
 .movies-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));

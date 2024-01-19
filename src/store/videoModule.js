@@ -29,7 +29,6 @@ export default {
           },
         });
 
-        console.log(response);
         const videos = response.data.results;
 
         commit('setVideos', videos);

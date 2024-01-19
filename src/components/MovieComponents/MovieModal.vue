@@ -9,6 +9,14 @@
                 <div class="overview">
                     <h5>Overview:</h5>
                     <h6>{{ movie.overview }}</h6>
+                    <div class="data">
+                    <div>
+                        {{ movie.release_date }}
+                    </div>
+                    <div>
+                        <i class="bi bi-star-fill"></i> {{ movie.vote_average }}
+                    </div>
+                </div>
                     <div>
                         <div v-if="hasVideos">
                             <h5>{{ hasTrailers ? 'Trailer:' : 'Video:' }}</h5>
@@ -18,14 +26,6 @@
                         <div v-else>
                             No hay videos disponibles.
                         </div>
-                    </div>
-                </div>
-                <div class="data">
-                    <div>
-                        {{ movie.release_date }}
-                    </div>
-                    <div>
-                        <i class="bi bi-star-fill"></i> {{ movie.vote_average }}
                     </div>
                 </div>
             </div>
@@ -47,8 +47,6 @@ export default {
             type: Boolean,
             default: true,
         },
-    },
-    data() {
     },
     methods: {
         getImageUrl(posterPath) {
@@ -88,7 +86,7 @@ export default {
     justify-content: center;
     position: fixed;
     top: 0;
-    left: 5%;
+    left: 4%;
     width: 100%;
     height: 100%;
     z-index: 1001;
@@ -164,6 +162,12 @@ export default {
     height: 10%;
     padding: 0px;
     min-height: 50px;
+}
+
+@media (max-width: 767px) {
+    .modal{
+        left: 0%;
+    }
 }
 
 </style>
