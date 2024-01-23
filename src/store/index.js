@@ -34,21 +34,23 @@ export default createStore({
     },
   },
   actions: {
-    async discoverMovies({ commit }, page) {
+    async discoverMovies({ commit }, { startPage, endPage }) {
       try {
-        const response = await axios.get(`${API_URL}/discover/movie`, {
-          params: {
-            api_key: API_KEY,
-            page: page,
-          },
-        });
-        
-        const movies = response.data.results;
-
-        if (page === 1) {
-          commit('setDiscoverMovies', movies);
-        } else {
-          commit('addDiscoverMovies', movies);
+        for (let page = startPage; page <= endPage; page++) {
+          const response = await axios.get(`${API_URL}/discover/movie`, {
+            params: {
+              api_key: API_KEY,
+              page: page,
+            },
+          });
+          
+          const movies = response.data.results;
+  
+          if (page === startPage) {
+            commit('setDiscoverMovies', movies);
+          } else {
+            commit('addDiscoverMovies', movies);
+          }
         }
       } catch (error) {
         console.error('Error fetching discover movies:', error);

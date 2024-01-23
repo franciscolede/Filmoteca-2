@@ -40,7 +40,7 @@ export default {
     async discoverMovies() {
       try {
         this.loading = true;
-        await this.$store.dispatch('discoverMovies', this.currentPage);
+        await this.$store.dispatch('discoverMovies', { startPage: 1, endPage: this.currentPage });;
       } catch (error) {
         console.error('Error:', error);
       } finally {

@@ -20,7 +20,7 @@
                     <div>
                         <div v-if="hasVideos">
                             <h5>{{ hasTrailers ? 'Trailer:' : 'Video:' }}</h5>
-                            <iframe width="560" height="315" :src="getYouTubeEmbedUrl(getVideoToDisplay().key)"
+                            <iframe width="90%" height="315" :src="getYouTubeEmbedUrl(getVideoToDisplay().key)"
                                 frameborder="0" allowfullscreen></iframe>
                         </div>
                         <div v-else>

@@ -1,7 +1,7 @@
 <template>
-    <div class="container-lg genre-section" v-for="genre in genresWithMovies" :key="genre.id">
+    <div class="container-xxl genre-section" v-for="genre in genresWithMovies" :key="genre.id">
       <h4 class="title">{{ genre.name }}</h4>
-      <div class="genre-container container-lg">
+      <div class="genre-container container-xxl">
         <div class="movies-container">
           <div class="movie" style="display: inline-block;" v-for="movie in getMoviesByGenre(genre.id)" :key="movie.id">
             <Movie :movie="movie" />
@@ -19,14 +19,14 @@ export default {
     Movie,
   },
   async mounted() {
-    try {
-      await this.$store.dispatch('fetchGenres');
-      await this.$store.commit('clearMovies');
-      await this.$store.dispatch('discoverMovies');
-    } catch (error) {
-      console.error('Error al cargar géneros y películas:', error);
-    }
-  },
+  try {
+    await this.$store.dispatch('fetchGenres');
+    await this.$store.commit('clearMovies');
+    await this.$store.dispatch('discoverMovies', { startPage: 1, endPage: 3 });
+  } catch (error) {
+    console.error('Error al cargar géneros y películas:', error);
+  }
+},
   computed: {
     genres() {
       return this.$store.getters.getGenres;
@@ -48,7 +48,7 @@ export default {
       }
     },
     hasMovies(genreId) {
-      return this.getMoviesByGenre(genreId).length > 0;
+      return this.getMoviesByGenre(genreId).length >= 8;
     },
   }
 };
@@ -57,8 +57,7 @@ export default {
 
 <style scoped>
 .genre-section{
-  margin: 20px auto;
-  width: 100%;
+  margin: 10px auto;
 }
 
 .title {
