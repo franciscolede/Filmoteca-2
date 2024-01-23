@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      currentPage: 1,
+      currentPage: 2,
       loading: false,
     };
   },
@@ -34,13 +34,14 @@ export default {
     },
   },
   mounted() {
-    this.discoverMovies();
+    this.$store.commit('clearMovies');
+    this.$store.dispatch('discoverMovies', { startPage: 1, endPage: this.currentPage });
   },
   methods: {
     async discoverMovies() {
       try {
         this.loading = true;
-        await this.$store.dispatch('discoverMovies', { startPage: 1, endPage: this.currentPage });;
+        await this.$store.dispatch('addMovies', { page: this.currentPage });
       } catch (error) {
         console.error('Error:', error);
       } finally {
