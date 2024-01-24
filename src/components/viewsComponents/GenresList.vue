@@ -1,7 +1,7 @@
 <template>
-    <div class="container-xxl genre-section" v-for="genre in genresWithMovies" :key="genre.id">
+    <div class="container-fluid genre-section" v-for="genre in genresWithMovies" :key="genre.id">
       <h4 class="title">{{ genre.name }}</h4>
-      <div class="genre-container container-xxl">
+      <div class="container-fluid genre-container">
         <div class="movies-container">
           <div class="movie" style="display: inline-block;" v-for="movie in getMoviesByGenre(genre.id)" :key="movie.id">
             <Movie :movie="movie" />
@@ -58,10 +58,12 @@ export default {
 <style scoped>
 .genre-section{
   margin: 10px auto;
+  height: 20em;
 }
 
 .title {
   text-align: start;
+  height: 10%;
 }
 
 .genre-container {
@@ -78,10 +80,11 @@ export default {
 .movies-container {
   display: flex;
   flex-wrap: nowrap;
+  height: 100%;
 }
 
 .movie {
-  flex: 0 0 8em;
+  flex: 0 0 10em;
   margin-right: 10px;
   height: 100%;
   white-space: wrap;
