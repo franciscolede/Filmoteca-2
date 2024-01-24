@@ -1,6 +1,6 @@
 <template>
-    <div class="modal">
-        <div class="modal-content">
+    <div class="modal" @click="closeModalOutside">
+        <div class="modal-content" @click.stop>
             <div class="blur-background" :style="{ backgroundImage: `url(${getImageUrl(movie.poster_path)})` }"></div>
             <div class="modal-header">
                 <h3 class="modal-title">{{ movie.title }}</h3>
@@ -57,6 +57,11 @@ export default {
         },
         getVideoToDisplay() {
             return this.hasTrailers ? this.firstTrailer : (this.hasVideos ? this.videos[0] : null);
+        },
+        closeModalOutside(event) {
+            if (!this.$el.querySelector('.modal-content').contains(event.target)) {
+                this.$emit('closeModal');
+            }
         },
     },
     mounted() {
