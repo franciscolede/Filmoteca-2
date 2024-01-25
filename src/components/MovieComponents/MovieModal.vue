@@ -10,13 +10,13 @@
                     <h5>Overview:</h5>
                     <h6>{{ movie.overview }}</h6>
                     <div class="data">
-                    <div>
-                        {{ movie.release_date }}
+                        <div>
+                            <i class="bi bi-calendar-week"></i>{{ movie.release_date }}
+                        </div>
+                        <div>
+                            <i class="bi bi-star-fill"></i> {{ movie.vote_average }}
+                        </div>
                     </div>
-                    <div>
-                        <i class="bi bi-star-fill"></i> {{ movie.vote_average }}
-                    </div>
-                </div>
                     <div>
                         <div v-if="hasVideos">
                             <h5>{{ hasTrailers ? 'Trailer:' : 'Video:' }}</h5>
@@ -139,7 +139,7 @@ export default {
     text-align: center;
 }
 
-.modal-header{
+.modal-header {
     height: 15%;
 }
 
@@ -170,9 +170,8 @@ export default {
 }
 
 @media (max-width: 767px) {
-    .modal{
+    .modal {
         left: 0%;
     }
 }
-
 </style>

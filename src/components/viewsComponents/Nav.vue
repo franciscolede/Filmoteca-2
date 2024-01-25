@@ -10,6 +10,10 @@
                 <i class="bi bi-compass-fill"></i>
                 <p>Discover</p>
             </router-link>
+            <router-link class="router-link" to="/top-rated">
+                <i class="bi bi-fire"></i>
+                <p>Top Rated</p>
+            </router-link>
         </div>
     </nav>
 </template>

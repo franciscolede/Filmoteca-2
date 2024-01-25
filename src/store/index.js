@@ -10,11 +10,13 @@ export default createStore({
     discoverMovies: [],
     searchMovies: [],
     genres: [],
+    topRated: [],
   },
   getters: {
     getDiscoverMovies: (state) => state.discoverMovies,
     getSearchMovies: (state) => state.searchMovies,
     getGenres: (state) => state.genres,
+    getTopRated: (state) => state.topRated,
   },
   mutations: {
     setDiscoverMovies: (state, movies) => {
@@ -32,9 +34,12 @@ export default createStore({
     clearMovies: (state) => {
       state.discoverMovies = [];
     },
+    setTopRated: (state, topRated) => {
+      state.topRated = topRated;
+    },
   },
   actions: {
-    async discoverMovies({ commit }, { startPage, endPage }) {
+    async discoverMovies({}, { startPage, endPage }) {
       try {
         for (let page = startPage; page <= endPage; page++) {
           await this.dispatch('addMovies', { page });
@@ -92,6 +97,19 @@ export default createStore({
       }
     },
 
+    async fetchTopRated({ commit },) {
+      try {
+        const response = await axios.get(`${API_URL}/movie/top_rated`, {
+          params: {
+            api_key: API_KEY,
+          },
+        });
+        const topRated = response.data.results;
+        commit('setTopRated', topRated);
+      } catch (error) {
+        console.error('Error fetching discover movies:', error);
+      }
+    },
   },
   modules: {
     videoModule: videoModule,

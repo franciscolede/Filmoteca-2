@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DiscoverView from '../views/DiscoverView.vue'
+import TopRatedView from '../views/TopRatedView.vue'
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: '/discover',
     name: 'discover',
     component: DiscoverView
+  },
+  {
+    path: '/top-rated',
+    name: 'top-rated',
+    component: TopRatedView
   },
   {
     // path: '/about',
