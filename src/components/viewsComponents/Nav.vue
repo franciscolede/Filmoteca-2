@@ -73,6 +73,18 @@ i {
     bottom: 0.7em;
 }
 
+p{
+    opacity: 0%;
+}
+
+.router-link:hover p{
+    opacity: 100%;
+}
+
+nav a.router-link-exact-active p {
+    opacity: 100%;
+}
+
 @media (max-width: 767px) {
 
     nav {
@@ -95,5 +107,8 @@ i {
         width: 100%;
     }
 
+    p{
+        display: none;
+    }
 }
 </style>

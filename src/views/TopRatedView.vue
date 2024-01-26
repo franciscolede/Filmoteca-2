@@ -25,7 +25,14 @@
     text-decoration-color: #54a06e;
 
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 50px;
   }
+
+  @media (max-width: 767px) {
+    h1 {
+      font-size: 20px;
+  }
+}
 
 </style>
   
