@@ -8,13 +8,15 @@ const API_KEY = 'dd12843975ef1507dc4e7cee16599a96';
 export default createStore({
   state: {
     discoverMovies: [],
-    searchMovies: [],
+    searchedMovies: [],
+    searchingMovies: [],
     genres: [],
     topRated: [],
   },
   getters: {
     getDiscoverMovies: (state) => state.discoverMovies,
-    getSearchMovies: (state) => state.searchMovies,
+    getSearchedMovies: (state) => state.searchedMovies,
+    getSearchingMovies: (state) => state.searchingMovies,
     getGenres: (state) => state.genres,
     getTopRated: (state) => state.topRated,
   },
@@ -25,8 +27,11 @@ export default createStore({
     addDiscoverMovies: (state, movies) => {
       state.discoverMovies = [...state.discoverMovies, ...movies];
     },
-    setSearchMovies: (state, movies) => {
-      state.searchMovies = movies;
+    setSearchedMovies: (state, movies) => {
+      state.searchedMovies = movies;
+    },
+    setSearchingMovies: (state, movies) => {
+      state.searchingMovies = movies;
     },
     setGenres: (state, genres) => {
       state.genres = genres;
@@ -64,18 +69,23 @@ export default createStore({
       }
     },
 
-    async searchMovies({ commit }, query) {
+    async searchMovies({ commit }, { query, type }) {
       try {
         const response = await axios.get(`${API_URL}/search/movie`, {
           params: {
             api_key: API_KEY,
             query: query,
+            type: type,
           },
         });
-
+    
         const movies = response.data.results;
-
-        commit('setSearchMovies', movies);
+    
+        if (type === "ing") {
+          return movies;
+        } else if (type === "ed") {
+          commit('setSearchedMovies', movies);
+        }
       } catch (error) {
         console.error('Error searching movies:', error);
       }

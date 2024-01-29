@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Search from './components/viewsComponents/search.vue'; 
+import Search from './components/search.vue';
 import Nav from './components/viewsComponents/Nav.vue';
 
 

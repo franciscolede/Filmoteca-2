@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DiscoverView from '../views/DiscoverView.vue'
 import TopRatedView from '../views/TopRatedView.vue'
+import SearchView from '../views/SearchView.vue'
 
 const routes = [
   {
@@ -18,6 +19,12 @@ const routes = [
     path: '/top-rated',
     name: 'top-rated',
     component: TopRatedView
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: SearchView,
+    props: (route) => ({ searchData: route.params.searchData || []})
   },
   {
     // path: '/about',

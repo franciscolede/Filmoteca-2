@@ -1,7 +1,8 @@
 <template>
   <div class="search-container" ref="searchContainer">
-    <i class="bi bi-search" style="margin-right: 5px;" ></i>
-    <input type="text" placeholder="Search for a movie..." v-model="searchQuery" @input="searchMovies">
+    <input type="text" placeholder="Search for a movie..." v-model="searchQuery" @keyup.enter="enterSearch"
+      @input="searchMovies">
+    <i class="bi bi-search" style="margin-left: 5px; cursor: pointer;" @click="enterSearch"></i>
     <div v-if="searchSuggestions.length > 0" class="search-suggestions" @click="handleSuggestionsClick">
       <div v-for="suggestion in searchSuggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
         {{ suggestion.title }}
@@ -12,7 +13,7 @@
 </template>
   
 <script>
-import MovieModal from '../MovieComponents/MovieModal.vue';
+import MovieModal from './MovieComponents/MovieModal.vue';
 
 export default {
   data() {
@@ -30,8 +31,8 @@ export default {
   methods: {
     async searchMovies() {
       try {
-        await this.$store.dispatch('searchMovies', this.searchQuery);
-        this.searchSuggestions = this.$store.getters.getSearchMovies;
+        const result = await this.$store.dispatch('searchMovies', { query: this.searchQuery, type: "ing" });
+        this.searchSuggestions = result || [];
       } catch (error) {
         console.error('Error:', error);
       }
@@ -49,12 +50,28 @@ export default {
       }
     },
 
-    openModal() {
-      
-    },
     modalClosed() {
       this.clickModalBool = false;
+    },
+
+    async enterSearch() {
+      if (this.searchQuery.length > 0) {
+        try {
+          await this.$store.dispatch('searchMovies', { query: this.searchQuery, type: "ed" })
+          const searchText = this.searchQuery.trim();
+          this.$router.push({
+            name: 'search',
+            query: { searchText: searchText }
+          });
+          this.searchSuggestions = [];
+          this.searchQuery = "";
+        }
+        catch (error) {
+          console.error('Error:', error);
+        }
+      }
     }
+
   },
   mounted() {
     this.$nextTick(() => {
@@ -83,7 +100,7 @@ input {
   padding: 4px;
 }
 
-#btn-search{
+#btn-search {
   border-radius: 15px;
 }
 

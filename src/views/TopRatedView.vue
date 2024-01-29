@@ -9,7 +9,7 @@
   import TopRated from '@/components/viewsComponents/TopRated.vue'
   
   export default {
-    name: 'DiscoverView',
+    name: 'TopRatedView',
     components: {
       TopRated,
     }
