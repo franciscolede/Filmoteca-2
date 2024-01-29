@@ -7,7 +7,7 @@
     </div>
     <Loading v-if="loading"/>
     <div>
-      <button type="button" class="btn btn-primary" @click="loadMore" >Cargar más</button>
+      <button type="button" class="btn btn-success" @click="loadMore" >Cargar más</button>
     </div>
   </div>
 </template>

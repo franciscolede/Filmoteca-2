@@ -51,7 +51,7 @@ body {
   /* Firefox */
   * {
     scrollbar-width: auto;
-    scrollbar-color: #42b983 #ffffff;
+    scrollbar-color: #42b983;
   }
 
   /* Chrome, Edge, and Safari */

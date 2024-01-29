@@ -113,9 +113,9 @@ export default {
 
 .modal-content {
     position: relative;
-    width: 80%;
-    height: 80%;
-    max-width: 600px;
+    width: 100%;
+    height: 85%;
+    max-width: 800px;
     overflow: hidden;
     border-radius: 25px;
 }

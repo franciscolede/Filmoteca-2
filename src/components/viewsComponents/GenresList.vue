@@ -89,4 +89,8 @@ export default {
   height: 100%;
   white-space: wrap;
 }
+
+h4{
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
 </style>
