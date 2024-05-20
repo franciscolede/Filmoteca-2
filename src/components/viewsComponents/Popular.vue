@@ -69,7 +69,6 @@ export default {
 
 .movie {
   margin: 0;
-
 }
 
 button {
