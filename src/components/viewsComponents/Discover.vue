@@ -63,7 +63,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
   margin: 0px 5px;
-  grid-gap: 15px;
+  grid-gap: 10px;
   justify-content: center;
 }
 

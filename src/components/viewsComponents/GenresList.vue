@@ -1,16 +1,14 @@
 <template>
-    <div class="container-fluid genre-section" v-for="genre in genresWithMovies" :key="genre.id">
-      <h4 class="title">{{ genre.name }}</h4>
-      <div class="container-fluid genre-container">
-        <div class="movies-container">
-          <div class="movie" style="display: inline-block;" v-for="movie in getMoviesByGenre(genre.id)" :key="movie.id">
-            <Movie :movie="movie" />
-          </div>
-        </div>
+  <div class="container-fluid genre-section" v-for="genre in genresWithMovies" :key="genre.id">
+    <h4 class="title">{{ genre.name }}</h4>
+    <div class="container-fluid movies-container">
+      <div class="movie" v-for="movie in getMoviesByGenre(genre.id)" :key="movie.id">
+        <Movie :movie="movie" />
       </div>
     </div>
+  </div>
 </template>
-  
+
 <script>
 import Movie from '../MovieComponents/Movie.vue';
 
@@ -19,14 +17,14 @@ export default {
     Movie,
   },
   async mounted() {
-  try {
-    await this.$store.dispatch('fetchGenres');
-    await this.$store.commit('clearMovies');
-    await this.$store.dispatch('discoverMovies', { startPage: 1, endPage: 3 });
-  } catch (error) {
-    console.error('Error al cargar géneros y películas:', error);
-  }
-},
+    try {
+      await this.$store.dispatch('fetchGenres');
+      await this.$store.commit('clearMovies');
+      await this.$store.dispatch('discoverMovies', { startPage: 1, endPage: 3 });
+    } catch (error) {
+      console.error('Error al cargar géneros y películas:', error);
+    }
+  },
   computed: {
     genres() {
       return this.$store.getters.getGenres;
@@ -53,12 +51,13 @@ export default {
   }
 };
 </script>
-  
+
 
 <style scoped>
-.genre-section{
+.genre-section {
   margin: 10px auto;
   height: 20em;
+  width:85vw;
 }
 
 .title {
@@ -66,31 +65,25 @@ export default {
   height: 10%;
 }
 
-.genre-container {
-  display: flex;
-  flex-direction: column;
-  overflow-x: auto;
-  white-space: nowrap;
-  width: 100%;
-  padding: 0px;
-}
-
-
-
 .movies-container {
   display: flex;
-  flex-wrap: nowrap;
-  height: 100%;
+  gap: 5px;
+  width:85vw;
+  overflow: auto;
+  white-space:nowrap;
+  padding: 0px;
+  padding-bottom: 5px;
+  
 }
 
 .movie {
-  flex: 0 0 10em;
-  margin-right: 10px;
-  height: 100%;
-  white-space: wrap;
+  height: 240px;
+  flex: 0 0 auto;
 }
 
-h4{
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+
+h4 {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 </style>

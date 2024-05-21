@@ -47,17 +47,18 @@ export default {
 }
 
 .movie img {
-    width: 100%;
-    height: 100%;
+    width: 160px;
+    height: 240px;
+    object-fit: cover;
     border-radius: 10px;
     opacity: 0;
     transition: opacity 1s ease-in-out;
     cursor: pointer;
-    filter: brightness(0.9);
+    filter: saturate(0.8);
 }
 
 .movie img:hover{
-    filter: brightness(1);
+    filter: saturate(1.0);
   border: 1px solid white;
 }
 

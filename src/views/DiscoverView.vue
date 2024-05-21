@@ -5,7 +5,7 @@
   </template>
   
   <script>
-  import Popular from '@/components/viewsComponents/Popular.vue'
+  import Popular from '@/components/viewsComponents/Discover.vue'
   
   export default {
     name: 'DiscoverView',
