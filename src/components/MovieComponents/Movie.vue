@@ -56,12 +56,13 @@ export default {
     opacity: 0;
     transition: opacity 1s ease-in-out;
     cursor: pointer;
-    filter: saturate(0.8);
+    filter: contrast(0.9);
+    transition: transform 0.3s;
 }
 
 .movie img:hover{
-    filter: saturate(1.0);
-  border: 1px solid white;
+    filter: contrast(1.0);
+    transform: scale(1.05)
 }
 
 .movie img.loaded {

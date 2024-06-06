@@ -2,96 +2,108 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 import videoModule from './videoModule';
 
-const API_URL = 'https://api.themoviedb.org/3';
-const API_KEY = 'dd12843975ef1507dc4e7cee16599a96';
+import { API_URL, API_KEY } from '../data/moviesApiConfig.js';
 
 export default createStore({
   state: {
-    discoverMovies: [],
-    searchedMovies: [],
-    searchingMovies: [],
-    genres: [],
-    topRated: [],
+    // searchingMovies: [],
+
+    //CC
+    currentPage: 1,
+    movies: [],
+    moviesGenres: [],
+    topRatedMovies: [],
   },
   getters: {
-    getDiscoverMovies: (state) => state.discoverMovies,
-    getSearchedMovies: (state) => state.searchedMovies,
-    getSearchingMovies: (state) => state.searchingMovies,
-    getGenres: (state) => state.genres,
-    getTopRated: (state) => state.topRated,
+    // getSearchingMovies: (state) => state.searchingMovies,
+
+    //CC
+    getMovies: (state) => state.movies,
+    getMoviesGenres: (state) => state.moviesGenres,
+    getTopRatedMovies: (state) => state.topRatedMovies,
   },
   mutations: {
-    setDiscoverMovies: (state, movies) => {
-      state.discoverMovies = movies;
+    // setSearchingMovies: (state, movies) => {
+    //   state.searchingMovies = movies;
+    // },
+    //CC
+    addMovies: (state, movies) => {
+      state.movies = [...state.movies, ...movies];
+      state.currentPage++;
     },
-    addDiscoverMovies: (state, movies) => {
-      state.discoverMovies = [...state.discoverMovies, ...movies];
-    },
-    setSearchedMovies: (state, movies) => {
-      state.searchedMovies = movies;
-    },
-    setSearchingMovies: (state, movies) => {
-      state.searchingMovies = movies;
-    },
-    setGenres: (state, genres) => {
-      state.genres = genres;
+    setMovies: (state, movies) => {
+      state.movies = movies;
+      state.currentPage++;
     },
     clearMovies: (state) => {
-      state.discoverMovies = [];
+      state.movies = [];
     },
-    setTopRated: (state, topRated) => {
-      state.topRated = topRated;
+    setMoviesGenres: (state, moviesGenres) => {
+      state.moviesGenres = moviesGenres;
+    },
+    setTopRatedMovies: (state, topRatedMovies) => {
+      state.topRatedMovies = topRatedMovies;
     },
   },
   actions: {
-    async discoverMovies({}, { startPage, endPage }) {
-      try {
-        for (let page = startPage; page <= endPage; page++) {
-          await this.dispatch('addMovies', { page });
-        }
-      } catch (error) {
-        console.error('Error fetching discover movies:', error);
-      }
-    },
-  
-    async addMovies({ commit }, { page }) {
+    // async searchMovies({ commit }, { query, type }) {
+    //   try {
+    //     const response = await axios.get(`${API_URL}/search/movie`, {
+    //       params: {
+    //         api_key: API_KEY,
+    //         query: query,
+    //         type: type,
+    //       },
+    //     });
+
+    //     const movies = response.data.results;
+
+    //     if (type === "ing") {
+    //       return movies;
+    //     } else if (type === "ed") {
+    //       commit('setSearchedMovies', movies);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error searching movies:', error);
+    //   }
+    // },
+
+
+    //CC
+    async fetchMovies({ commit }) {
       try {
         const response = await axios.get(`${API_URL}/discover/movie`, {
           params: {
             api_key: API_KEY,
-            page: page,
+            page: this.currentPage,
           }
         });
         const movies = response.data.results;
-        commit('addDiscoverMovies', movies);
+        commit('setMovies', movies);
+      } catch (error) {
+        console.error('Error fetching discover movies:', error);
+      }
+    },
+
+    async addMovies({ commit, state }) {
+      try {
+        const nextPage = state.currentPage + 1;
+        const response = await axios.get(`${API_URL}/discover/movie`, {
+          params: {
+            api_key: API_KEY,
+            page: nextPage,
+          }
+        });
+        const movies = response.data.results;
+        commit('addMovies', movies);
       } catch (error) {
         console.error('Error fetching added movies:', error);
       }
     },
 
-    async searchMovies({ commit }, { query, type }) {
-      try {
-        const response = await axios.get(`${API_URL}/search/movie`, {
-          params: {
-            api_key: API_KEY,
-            query: query,
-            type: type,
-          },
-        });
     
-        const movies = response.data.results;
-    
-        if (type === "ing") {
-          return movies;
-        } else if (type === "ed") {
-          commit('setSearchedMovies', movies);
-        }
-      } catch (error) {
-        console.error('Error searching movies:', error);
-      }
-    },
 
-    async fetchGenres({ commit }) {
+    async fetchMoviesGenres({ commit }) {
       try {
         const response = await axios.get(`${API_URL}/genre/movie/list`, {
           params: {
@@ -99,25 +111,25 @@ export default createStore({
           },
         });
 
-        const genres = response.data.genres;
+        const moviesGenres = response.data.genres;
 
-        commit('setGenres', genres);
+        commit('setMoviesGenres', moviesGenres);
       } catch (error) {
-        console.error('Error searching genres:', error);
+        console.error('Error searching movies genres:', error);
       }
     },
 
-    async fetchTopRated({ commit },) {
+    async fetchTopRatedMovies({ commit }) {
       try {
         const response = await axios.get(`${API_URL}/movie/top_rated`, {
           params: {
             api_key: API_KEY,
           },
         });
-        const topRated = response.data.results;
-        commit('setTopRated', topRated);
+        const topRatedMovies = response.data.results;
+        commit('setTopRatedMovies', topRatedMovies);
       } catch (error) {
-        console.error('Error fetching discover movies:', error);
+        console.error('Error fetching top-rated movies:', error);
       }
     },
   },

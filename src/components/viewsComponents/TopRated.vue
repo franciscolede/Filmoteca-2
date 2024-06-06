@@ -7,11 +7,11 @@
             </div>
             <div class="data">
                 <div id="rating"><h5><i class="bi bi-star-fill"></i> {{ movie.vote_average }}</h5></div>
-                <div id="info"><h5 @click="openModal(movie)">+Info</h5></div>
+                <div id="info"><h5 @click="openModalByMovie(movie)">+Info</h5></div>
             </div>
             <hr>
         </div>
-        <MovieModal v-if="clickModalBool" :movie="selectedMovie" @closeModal="modalClosed" />
+        <MovieModal v-if="isModalOpen" :movie="selectedMovie" @closeModal="closeModal" />
     </div>
 </template>
   
@@ -25,29 +25,29 @@ export default {
     },
     data() {
         return {
-            clickModalBool: false,
+            isModalOpen: false,
             selectedMovie: null,
         };
     },
+    mounted() {
+        this.$store.dispatch('fetchTopRatedMovies');
+    },
     computed: {
         topRated() {
-            return this.$store.getters.getTopRated;
+            return this.$store.getters.getTopRatedMovies;
         },
-    },
-    mounted() {
-        this.$store.dispatch('fetchTopRated');
     },
     methods: {
         getImageUrl(posterPath) {
             return `https://image.tmdb.org/t/p/original/${posterPath}`;
         },
-        openModal(movie) {
+        openModalByMovie(movie) {
             this.selectedMovie = movie;
-            this.clickModalBool = true;
+            this.isModalOpen = true;
         },
-        modalClosed() {
+        closeModal() {
             this.clickModalBool = false;
-            this.selectedMovie = null;
+            this.isModalOpen = null;
         }
     },
 };

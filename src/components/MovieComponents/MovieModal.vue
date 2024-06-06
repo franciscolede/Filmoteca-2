@@ -51,8 +51,8 @@ export default {
     mounted() {
         this.$store.dispatch('videoModule/fetchTrailerByMovieId', this.movie.id);
     },
-    unmounted() {
-        this.$store.dispatch('videoModule/cleanMovieTrailer');
+    beforeUnmount() {
+        this.$store.commit('videoModule/clearMovieTrailer');
     },
     methods: {
         closeModalOutside(event) {

@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://api.themoviedb.org/3';
-const API_KEY = 'dd12843975ef1507dc4e7cee16599a96';
+import { API_URL, API_KEY } from '../data/moviesApiConfig.js';
 
 export default {
   namespaced: true, 
@@ -18,7 +17,7 @@ export default {
     setMovieTrailer(state, movieTrailer) {
       state.movieTrailer = movieTrailer;
     },
-    cleanMovieTrailer(state) {
+    clearMovieTrailer(state) {
       state.movieTrailer = null;
     },
   },
@@ -39,8 +38,5 @@ export default {
         console.error('Error fetching movie trailer:', error);
       }
     },
-    cleanMovieTrailer({commit}){
-      commit('cleanMovieTrailer');
-    }
   },
 };

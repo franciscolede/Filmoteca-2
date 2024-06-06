@@ -18,7 +18,7 @@ export default {
   },
   async mounted() {
     try {
-      await this.$store.dispatch('fetchGenres');
+      await this.$store.dispatch('fetchMoviesGenres');
       await this.$store.commit('clearMovies');
       await this.$store.dispatch('discoverMovies', { startPage: 1, endPage: 3 });
     } catch (error) {
@@ -26,11 +26,11 @@ export default {
     }
   },
   computed: {
-    genres() {
-      return this.$store.getters.getGenres;
+    moviesGenres() {
+      return this.$store.getters.getMoviesGenres;
     },
     genresWithMovies() {
-      return this.genres.filter(genre => this.hasMovies(genre.id));
+      return this.moviesGenres.filter(genre => this.hasMovies(genre.id));
     },
   },
   methods: {
