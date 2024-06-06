@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import SearchedMovies from '@/components/viewsComponents/SearchedMovies.vue'
+import SearchedMovies from '../components/viewsComponents/SearchedMovies.vue'
 
 export default {
   name: 'SearchView',

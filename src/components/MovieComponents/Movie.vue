@@ -1,6 +1,6 @@
 <template>
-    <div class="movie">
-        <img :src="imageUrl" :alt="movie.title" loading="lazy" @load="imageLoaded"
+    <div class="movie" :class="{ 'discover': isDiscover }">
+        <img :src="imageUrl" :alt="movie.title" :style="imageStyle" loading="lazy" @load="imageLoaded"
             @click="openModal" />
     </div>
     <MovieModal v-if="isModalOpen" :movie="movie" @closeModal="closeModal"/>
@@ -62,7 +62,10 @@ export default {
 
 .movie img:hover{
     filter: contrast(1.0);
-    transform: scale(1.05)
+}
+
+.discover img:hover {
+    transform: scale(1.05);
 }
 
 .movie img.loaded {

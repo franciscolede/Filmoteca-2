@@ -2,7 +2,7 @@
   <div class="trends">
     <div class="movies-container">
       <div class="movie" v-for="movie in movies" :key="movie.id">
-        <Movie :movie="movie"/>
+        <Movie :movie="movie" :isDiscover="true"/>
       </div>
     </div>
   </div>
