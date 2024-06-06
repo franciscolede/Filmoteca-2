@@ -1,9 +1,9 @@
 <template>
     <div class="movie">
-        <img :src="getImageUrl(movie.poster_path)" :alt="movie.title" loading="lazy" @load="imageLoaded"
+        <img :src="imageUrl" :alt="movie.title" loading="lazy" @load="imageLoaded"
             @click="openModal" />
     </div>
-    <MovieModal v-if="clickModalBool" :movie="movie" @closeModal="modalClosed"/>
+    <MovieModal v-if="isModalOpen" :movie="movie" @closeModal="closeModal"/>
 </template>
   
 <script>
@@ -17,25 +17,27 @@ export default {
     },
     data() {
         return {
-            clickModalBool: false,
+            isModalOpen: false,
         };
     },
     components: {
         MovieModal,
     },
     methods: {
-        getImageUrl(posterPath) {
-            return `https://image.tmdb.org/t/p/original/${posterPath}`;
+        openModal() {
+            this.isModalOpen = true;
+        },
+        closeModal(){
+            this.isModalOpen = false;
         },
         imageLoaded(event) {
             event.target.classList.add('loaded');
-        },
-        openModal() {
-            this.clickModalBool = true;
-        },
-        modalClosed(){
-            this.clickModalBool = false;
         }
+    },
+    computed: {
+        imageUrl() {
+            return `https://image.tmdb.org/t/p/original/${this.movie.poster_path}`;
+        },
     },
 };
 </script>

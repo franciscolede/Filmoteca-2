@@ -1,14 +1,14 @@
 <template>
     <div class="modal" @click="closeModalOutside">
         <div class="modal-content" @click.stop>
-            <div class="blur-background" :style="{ backgroundImage: `url(${getImageUrl(movie.poster_path)})` }"></div>
+            <div class="blur-background" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
             <div class="modal-header">
                 <h3 class="modal-title">{{ movie.title }}</h3>
             </div>
             <div class="modal-body">
                 <div class="overview">
                     <h5>Overview:</h5>
-                    <h6>{{ movie.overview }}</h6>
+                    <h6 class="overview-text">{{ movie.overview }}</h6>
                     <div class="data">
                         <div>
                             <i class="bi bi-calendar-week"></i>{{ movie.release_date }}
@@ -18,13 +18,12 @@
                         </div>
                     </div>
                     <div>
-                        <div v-if="hasVideos">
-                            <h5>{{ hasTrailers ? 'Trailer:' : 'Video:' }}</h5>
-                            <iframe width="90%" height="315" :src="getYouTubeEmbedUrl(getVideoToDisplay().key)"
-                                frameborder="0" allowfullscreen></iframe>
+                        <div v-if="MovieTrailer">
+                            <iframe width="90%" height="315" :src="youTubeUrl" frameborder="0"
+                                allowfullscreen></iframe>
                         </div>
                         <div v-else>
-                            No hay videos disponibles.
+                            No hay trailer disponible.
                         </div>
                     </div>
                 </div>
@@ -37,6 +36,7 @@
 </template>
 
 <script>
+
 export default {
     props: {
         movie: {
@@ -48,37 +48,28 @@ export default {
             default: true,
         },
     },
+    mounted() {
+        this.$store.dispatch('videoModule/fetchTrailerByMovieId', this.movie.id);
+    },
+    unmounted() {
+        this.$store.dispatch('videoModule/cleanMovieTrailer');
+    },
     methods: {
-        getImageUrl(posterPath) {
-            return `https://image.tmdb.org/t/p/original/${posterPath}`;
-        },
-        getYouTubeEmbedUrl(videoKey) {
-            return `https://www.youtube.com/embed/${videoKey}`;
-        },
-        getVideoToDisplay() {
-            return this.hasTrailers ? this.firstTrailer : (this.hasVideos ? this.videos[0] : null);
-        },
         closeModalOutside(event) {
             if (!this.$el.querySelector('.modal-content').contains(event.target)) {
                 this.$emit('closeModal');
             }
-        },
-    },
-    mounted() {
-        this.$store.dispatch('videoModule/fetchVideos', this.movie.id);
+        }
     },
     computed: {
-        videos() {
-            return this.$store.getters['videoModule/getVideos'];
+        MovieTrailer() {
+            return this.$store.getters['videoModule/getMovieTrailer'];
         },
-        hasTrailers() {
-            return this.videos && this.videos.some(video => video.type === 'Trailer');
+        imageUrl() {
+            return `https://image.tmdb.org/t/p/original/${this.movie.poster_path}`;
         },
-        firstTrailer() {
-            return this.videos.find(video => video.type === 'Trailer');
-        },
-        hasVideos() {
-            return this.videos && this.videos.length > 0;
+        youTubeUrl() {
+            return this.MovieTrailer ? `https://www.youtube.com/embed/${this.MovieTrailer.key}` : '';
         },
     },
 };
@@ -97,6 +88,10 @@ export default {
     z-index: 1001;
     overflow: hidden;
     max-height: 900px;
+}
+
+.overview-text {
+    text-wrap: wrap;
 }
 
 .blur-background {
@@ -131,8 +126,6 @@ export default {
     padding: 20px;
     box-sizing: border-box;
 }
-
-
 
 .modal-title {
     width: 100%;

@@ -7,21 +7,24 @@ export default {
   namespaced: true, 
 
   state: {
-    videos: [],
+    movieTrailer: null,
   },
 
   getters: {
-    getVideos: (state) => state.videos,
+    getMovieTrailer: (state) => state.movieTrailer,
   },
 
   mutations: {
-    setVideos: (state, videos) => {
-      state.videos = videos;
+    setMovieTrailer(state, movieTrailer) {
+      state.movieTrailer = movieTrailer;
+    },
+    cleanMovieTrailer(state) {
+      state.movieTrailer = null;
     },
   },
 
   actions: {
-    async fetchVideos({ commit }, movieId) {
+    async fetchTrailerByMovieId({ commit }, movieId) {
       try {
         const response = await axios.get(`${API_URL}/movie/${movieId}/videos`, {
           params: {
@@ -29,12 +32,15 @@ export default {
           },
         });
 
-        const videos = response.data.results;
+        const movieTrailer = response.data.results.find(video => video.type === 'Trailer') || null;
 
-        commit('setVideos', videos);
+        commit('setMovieTrailer', movieTrailer);
       } catch (error) {
-        console.error('Error fetching movie videos:', error);
+        console.error('Error fetching movie trailer:', error);
       }
     },
+    cleanMovieTrailer({commit}){
+      commit('cleanMovieTrailer');
+    }
   },
 };
