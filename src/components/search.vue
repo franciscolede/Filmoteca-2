@@ -1,89 +1,90 @@
 <template>
   <div class="search-container" ref="searchContainer">
-    <input type="text" placeholder="Search for a movie..." v-model="searchQuery" @keyup.enter="enterSearch"
-      @input="searchMovies">
-    <i class="bi bi-search" style="margin-left: 5px; cursor: pointer;" @click="enterSearch"></i>
-    <div v-if="searchSuggestions.length > 0" class="search-suggestions" @click="handleSuggestionsClick">
-      <div v-for="suggestion in searchSuggestions" :key="suggestion.id" @click="selectSuggestion(suggestion)">
+    <input type="text" placeholder="Search for a movie..." v-model="movieBeingSearched" @keyup.enter="searchedMovies"
+      @input="searchingMovies">
+    <i class="bi bi-search" style="margin-left: 5px; cursor: pointer;" @click="searchedMovies"></i>
+    <div v-if="searchSuggestions.length" class="search-suggestions">
+      <div v-for="suggestion in searchSuggestions" :key="suggestion.id" @click="selectMovieBySuggestion(suggestion)">
         {{ suggestion.title }}
       </div>
     </div>
   </div>
-  <MovieModal v-if="clickModalBool" :movie="selectedSuggestion" @closeModal="modalClosed" />
+  <MovieModal v-if="isModalOpen" :movie="selectedMovie" @closeModal="closeModal" />
 </template>
-  
+
 <script>
 import MovieModal from './MovieComponents/MovieModal.vue';
 
 export default {
   data() {
     return {
-      searchQuery: '',
-      searchSuggestions: [],
-      selectedSuggestion: "",
-
-      clickModalBool: false,
+      movieBeingSearched: "",
+      selectedMovie: "",
+      isModalOpen: false,
     };
   },
   components: {
     MovieModal,
   },
-  methods: {
-    async searchMovies() {
-      try {
-        const result = await this.$store.dispatch('searchMovies', { query: this.searchQuery, type: "ing" });
-        this.searchSuggestions = result || [];
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    },
-    selectSuggestion(suggestion) {
-      this.selectedSuggestion = suggestion;
-      this.clickModalBool = true;
-      this.searchSuggestions = [];
-      this.searchQuery = "";
-    },
-    handleSuggestionsClick(event) {
-      if (this.$refs.searchContainer && !this.$refs.searchContainer.contains(event.target)) {
-        // Clic fuera del área de interés, cierra la lista de sugerencias
-        this.searchSuggestions = [];
-      }
-    },
-
-    modalClosed() {
-      this.clickModalBool = false;
-    },
-
-    async enterSearch() {
-      if (this.searchQuery.length > 0) {
-        try {
-          await this.$store.dispatch('searchMovies', { query: this.searchQuery, type: "ed" })
-          const searchText = this.searchQuery.trim();
-          this.$router.push({
-            name: 'search',
-            query: { searchText: searchText }
-          });
-          this.searchSuggestions = [];
-          this.searchQuery = "";
-        }
-        catch (error) {
-          console.error('Error:', error);
-        }
-      }
+  computed: {
+    searchSuggestions() {
+      return this.$store.getters.getSearchingMovies;
     }
-
   },
   mounted() {
-    this.$nextTick(() => {
-      document.addEventListener('click', this.handleSuggestionsClick);
-    });
+    document.addEventListener('click', this.closeWhenClickOut);
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.handleSuggestionsClick);
+    document.removeEventListener('click', this.closeWhenClickOut);
+  },
+  methods: {
+    searchedMovies() {
+      if (this.movieBeingSearched) {
+        this.$store.dispatch('searchMoviesByNameAndTyping', {
+          name: this.movieBeingSearched,
+          typing: false,
+        });
+        this.pushNextPage();
+        this.clearPageData();
+      }
+    },
+    searchingMovies() {
+      this.$store.dispatch('searchMoviesByNameAndTyping', {
+        name: this.movieBeingSearched,
+        typing: true,
+      });
+    },
+    selectMovieBySuggestion(suggestion) {
+      this.selectedMovie = suggestion;
+      this.isModalOpen = true;
+      this.clearPageData();
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
+
+    closeWhenClickOut(event) {
+      if (this.$refs.searchContainer && !this.$refs.searchContainer.contains(event.target)) {
+        this.clearPageData();
+      }
+    },
+
+    pushNextPage() {
+      const searchText = this.movieBeingSearched.trim();
+      this.$router.push({
+        name: 'search',
+        params: { searchText: searchText }
+      });
+    },
+
+    clearPageData() {
+      this.movieBeingSearched = '';
+      this.$store.commit('clearSearchingMovies');
+    }
   },
 };
 </script>
-  
+
 <style scoped>
 .search-container {
   margin: auto;
@@ -128,4 +129,3 @@ input {
   background-color: #f0f0f0;
 }
 </style>
-  

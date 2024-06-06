@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DiscoverView from '../views/DiscoverView.vue'
 import TopRatedView from '../views/TopRatedView.vue'
@@ -21,10 +21,10 @@ const routes = [
     component: TopRatedView
   },
   {
-    path: '/search',
+    path: '/search/:searchText',
     name: 'search',
     component: SearchView,
-    props: (route) => ({ searchData: route.params.searchData || []})
+    props: (route) => ({ searchText: route.params.searchText || '' })
   },
   {
     // path: '/about',
@@ -37,7 +37,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 })
 

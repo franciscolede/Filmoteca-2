@@ -6,31 +6,19 @@ import { API_URL, API_KEY } from '../data/moviesApiConfig.js';
 
 export default createStore({
   state: {
-    // searchingMovies: [],
-
-    //CC
-    currentPage: 1,
     movies: [],
+    currentPage: 1,
+    searchingMovies: [],
     moviesGenres: [],
     topRatedMovies: [],
   },
   getters: {
-    // getSearchingMovies: (state) => state.searchingMovies,
-
-    //CC
     getMovies: (state) => state.movies,
+    getSearchingMovies: (state) => state.searchingMovies,
     getMoviesGenres: (state) => state.moviesGenres,
     getTopRatedMovies: (state) => state.topRatedMovies,
   },
   mutations: {
-    // setSearchingMovies: (state, movies) => {
-    //   state.searchingMovies = movies;
-    // },
-    //CC
-    addMovies: (state, movies) => {
-      state.movies = [...state.movies, ...movies];
-      state.currentPage++;
-    },
     setMovies: (state, movies) => {
       state.movies = movies;
       state.currentPage++;
@@ -38,6 +26,19 @@ export default createStore({
     clearMovies: (state) => {
       state.movies = [];
     },
+    
+    addMovies: (state, movies) => {
+      state.movies = [...state.movies, ...movies];
+      state.currentPage++;
+    },
+
+    setSearchingMovies: (state, movies) => {
+      state.searchingMovies = movies;
+    },
+    clearSearchingMovies: (state) => {
+      state.searchingMovies = [];
+    },
+    
     setMoviesGenres: (state, moviesGenres) => {
       state.moviesGenres = moviesGenres;
     },
@@ -46,30 +47,6 @@ export default createStore({
     },
   },
   actions: {
-    // async searchMovies({ commit }, { query, type }) {
-    //   try {
-    //     const response = await axios.get(`${API_URL}/search/movie`, {
-    //       params: {
-    //         api_key: API_KEY,
-    //         query: query,
-    //         type: type,
-    //       },
-    //     });
-
-    //     const movies = response.data.results;
-
-    //     if (type === "ing") {
-    //       return movies;
-    //     } else if (type === "ed") {
-    //       commit('setSearchedMovies', movies);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error searching movies:', error);
-    //   }
-    // },
-
-
-    //CC
     async fetchMovies({ commit }) {
       try {
         const response = await axios.get(`${API_URL}/discover/movie`, {
@@ -82,6 +59,25 @@ export default createStore({
         commit('setMovies', movies);
       } catch (error) {
         console.error('Error fetching discover movies:', error);
+      }
+    },
+
+    async searchMoviesByNameAndTyping({ commit }, { name, typing }) {
+      try {
+        const response = await axios.get(`${API_URL}/search/movie`, {
+          params: {
+            api_key: API_KEY,
+            query: name,
+          },
+        });
+        const movies = response.data.results;
+        if (typing) {
+          commit('setSearchingMovies', movies);
+        } else {
+          commit('setMovies', movies);
+        }
+      } catch (error) {
+        console.error('Error searching movies:', error);
       }
     },
 
@@ -101,7 +97,7 @@ export default createStore({
       }
     },
 
-    
+
 
     async fetchMoviesGenres({ commit }) {
       try {
