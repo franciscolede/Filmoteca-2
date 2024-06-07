@@ -2,7 +2,7 @@
   <div class="trends">
     <div class="movies-container">
       <div class="movie" v-for="movie in movies" :key="movie.id">
-        <Movie :movie="movie" :isDiscover="true"/>
+        <Movie :movie="movie" :hover="true"/>
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@ export default {
   },
   computed: {
       movies() {
-          return this.$store.getters.getMovies;
+          return this.$store.getters.getMovies.filter(movie => movie.poster_path);
       }
   },
 };
@@ -37,7 +37,6 @@ export default {
 
 .movie {
   margin: 0;
-
 }
 
 button {

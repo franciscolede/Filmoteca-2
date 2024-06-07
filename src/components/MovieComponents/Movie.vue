@@ -1,5 +1,5 @@
 <template>
-    <div class="movie" :class="{ 'discover': isDiscover }">
+    <div  class="movie" :class="{ 'hover': hover }">
         <img :src="imageUrl" :alt="movie.title" :style="imageStyle" loading="lazy" @load="imageLoaded"
             @click="openModal" />
     </div>
@@ -14,6 +14,7 @@ export default {
             type: Object,
             required: true,
         },
+        hover: Boolean,
     },
     data() {
         return {
@@ -36,7 +37,7 @@ export default {
     },
     computed: {
         imageUrl() {
-            return `https://image.tmdb.org/t/p/original/${this.movie.poster_path}`;
+            return `https://image.tmdb.org/t/p/w300/${this.movie.poster_path}`;
         },
     },
 };
@@ -64,7 +65,7 @@ export default {
     filter: contrast(1.0);
 }
 
-.discover img:hover {
+.hover img:hover {
     transform: scale(1.05);
 }
 

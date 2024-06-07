@@ -6,15 +6,19 @@
                 <img :src="getImageUrl(movie.backdrop_path)" :alt="movie.title" class="movie" loading="lazy" />
             </div>
             <div class="data">
-                <div id="rating"><h5><i class="bi bi-star-fill"></i> {{ movie.vote_average }}</h5></div>
-                <div id="info"><h5 @click="openModalByMovie(movie)">+Info</h5></div>
+                <div id="rating">
+                    <h5><i class="bi bi-star-fill"></i> {{ movie.vote_average }}</h5>
+                </div>
+                <div id="info">
+                    <h5 @click="openModalByMovie(movie)">+Info</h5>
+                </div>
             </div>
             <hr>
         </div>
         <MovieModal v-if="isModalOpen" :movie="selectedMovie" @closeModal="closeModal" />
     </div>
 </template>
-  
+
 <script>
 import MovieModal from '../MovieComponents/MovieModal.vue';
 
@@ -52,7 +56,7 @@ export default {
     },
 };
 </script>
-  
+
 <style scoped>
 .component {
     padding: 5px;
@@ -70,13 +74,8 @@ export default {
 }
 
 .movie-image {
-    width: 50%;
+    width: 80%;
     margin: 0px auto;
-    transition: width 0.3s ease;
-}
-
-.movie-container:hover .movie-image {
-    width: 70%;
 }
 
 .movie {
@@ -89,9 +88,10 @@ export default {
     text-align: start;
     margin: 0px auto;
 
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     text-transform: uppercase;
 }
+
 .data {
     width: 100%;
     display: flex;
@@ -99,26 +99,24 @@ export default {
     margin: 0px auto;
 }
 
-.data div{
+.data div {
     width: 50%;
     margin: 15px;
 }
 
-#rating{
+#rating {
     text-align: end;
 }
 
-#info{
+#info {
     text-align: start;
     cursor: pointer;
 }
 
-#info:hover{
+#info:hover {
     color: #54a06e;
 }
 
-i{
-}
 
 
 @media (max-width: 767px) {
@@ -133,6 +131,18 @@ i{
 
     .data h5 {
         font-size: 10px;
+    }
+}
+
+@media (min-width: 767px) {
+    .movie-image {
+        width: 50%;
+        margin: 0px auto;
+        transition: width 0.3s ease;
+    }
+
+    .movie-container:hover .movie-image {
+        width: 70%;
     }
 }
 </style>
